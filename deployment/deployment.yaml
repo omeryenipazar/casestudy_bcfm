@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: casestudyapi-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: casestudyapi
+  template:
+    metadata:
+      labels:
+        app: casestudyapi
+    spec:
+      containers:
+      - name: casestudyapi
+        image: omeryenipazar/casestudyapiapp:latest
+        ports:
+        - containerPort: 8000
