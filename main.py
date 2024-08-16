@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from typing import Dict, Any
 
 app = FastAPI()
 
@@ -11,10 +11,6 @@ def read_root():
 def read_health():
     return {"status": "healthy"}
 
-class Item(BaseModel):
-    name: str
-    value: str
-
 @app.post("/data")
-def receive_data(item: Item):
-    return item
+def receive_data(data: Dict[str, Any]):
+    return data
