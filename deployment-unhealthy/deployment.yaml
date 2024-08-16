@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: casestudyapi-deployment-unhealthy
+  namespace: casestudy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: casestudyapi-unhealthy
+  template:
+    metadata:
+      labels:
+        app: casestudyapi-unhealthy
+    spec:
+      containers:
+      - name: casestudyapi-unhealthy
+        image: omeryenipazar/casestudyapi:0.5
+        ports:
+        - containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5

@@ -109,3 +109,37 @@ spec:
       targetPort: 8000
 ```
 Bu adımları takip ederek, uygulamam Kubernetes cluster'ında çalışır hale geldi ve health check için /health endpoint'i üzerinden izlenebilir duruma geldi.
+
+
+health endpointinden 503 veren application için feature/unhealth branch'ini oluşturdum ve onun buildini aldım
+unhealthy image build:
+
+ docker build -t omeryenipazar/casestudyapi:0.5 .
+
+ push 
+  docker push omeryenipazar/casestudyapi:0.5
+
+
+uygulamaların swagger ui ı http://localhost/docs
+
+uygualamarın kubernetes'e deployment'ı
+
+kubectl apply -f deployment-healthy/deployment.yaml
+kubectl apply -f deployment-healthy/service.yaml
+
+unhealthy deploymentlar:
+kubectl apply -f deployment-unhealthy/deployment.yaml
+kubectl apply -f deployment-unhealthy/service.yaml
+
+healthy ve unhealthy uygualamaların kubectl get pods ile ekran görüntüsünü koyalım 
+
+kubetl desccribe pods ile restart olan uygulamanın desribe kısmındaki 503 kısmının ekran görüntüsünü koyalım
+
+
+## Ekran Görüntüleri
+
+![Uygulama Ekran Görüntüsü](https://github.com/IQAndreas/sample-images/blob/gh-pages/100-100-color/00.jpg?raw=true)
+
+  
+
+

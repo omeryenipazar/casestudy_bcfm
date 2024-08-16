@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: casestudyapi-deployment-healthy
+  namespace: casestudy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: casestudyapi-healthy
+  template:
+    metadata:
+      labels:
+        app: casestudyapi-healthy
+    spec:
+      containers:
+      - name: casestudyapi-healthy
+        image: omeryenipazar/casestudyapi:0.2
+        ports:
+        - containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5
