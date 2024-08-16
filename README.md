@@ -138,9 +138,11 @@ kubectl apply -f deployment-unhealthy/service.yaml
 
 
 ## Ekran Görüntüleri
-
+### Unhealthy Pod
 ![Unhealty pod ekran görüntüsü](https://github.com/omeryenipazar/casestudy_bcfm/blob/master/images/deployment-unhealthy.jpg?raw=true)
 
+### Describe Pod
+![Unhealty pod Describe Çıktısı](https://github.com/omeryenipazar/casestudy_bcfm/blob/master/images/deployment-describe.jpg?raw=true)
 
   
 
