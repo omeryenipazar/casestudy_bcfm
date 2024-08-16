@@ -61,19 +61,20 @@ deployment.yaml dosyası, Kubernetes cluster'ında pod'ları oluşturmak için k
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: casestudyapi-deployment
+  name: casestudyapi-deployment-healthy
+  namespace: casestudy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: casestudyapi
+      app: casestudyapi-healthy
   template:
     metadata:
       labels:
-        app: casestudyapi
+        app: casestudyapi-healthy
     spec:
       containers:
-      - name: casestudyapi
+      - name: casestudyapi-healthy
         image: omeryenipazar/casestudyapi:0.2
         ports:
         - containerPort: 8000
@@ -90,6 +91,7 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 5
 
+
 ```
 
 #### service.yaml
@@ -98,15 +100,17 @@ service.yaml dosyası, Kubernetes cluster'ında uygulamayı dış dünyaya açma
 apiVersion: v1
 kind: Service
 metadata:
-  name: casestudyapi-service
+  name: casestudyapi-service-healthy
+  namespace: casestudy
 spec:
   type: LoadBalancer
   selector:
-    app: casestudyapi
+    app: casestudyapi-healthy
   ports:
     - protocol: TCP
       port: 8000
       targetPort: 8000
+
 ```
 Bu adımları takip ederek, uygulamam Kubernetes cluster'ında çalışır hale geldi ve health check için /health endpoint'i üzerinden izlenebilir duruma geldi.
 
@@ -115,8 +119,9 @@ health endpointinden 503 veren application için feature/unhealth branch'ini olu
 unhealthy image build:
 ```bash
  docker build -t omeryenipazar/casestudyapi:0.5 .
-
- push 
+```
+docker push:
+```bash
   docker push omeryenipazar/casestudyapi:0.5
 ```
 
@@ -136,9 +141,9 @@ kubectl apply -f deployment-unhealthy/deployment.yaml
 kubectl apply -f deployment-unhealthy/service.yaml
 ```
 
-NGINX Kurulumu
-```bash
+### NGINX Kurulumu
 
+```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
 apiVersion: networking.k8s.io/v1
@@ -161,12 +166,15 @@ spec:
             name: casestudyapi-service-healthy
             port:
               number: 8000
-
+```
+Ingress i deploy etmek için bu komutu kullandım:
+```bash
 kubectl apply -f deployment-healthy/ingress.yaml
 ```
-curl localhost a istek attığmda ekran görüntüsündeki çıktı gözüktü. nginx İngress ile artık portsuz localhost ile erişebiliyorum
 
+curl ile localhost a istek attığmda ekran görüntüsündeki çıktı gözüktü. nginx İngress ile artık portsuz localhost ile erişebiliyorum
 
+AWS Kubernetes deployment'ı ile maliyetlerden ötürü yapmadım. Fakat docker desktop kubernetes ile tamamlayabildim.
 
 ## Ekran Görüntüleri
 ### Unhealthy Pod
