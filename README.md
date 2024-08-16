@@ -136,6 +136,37 @@ kubectl apply -f deployment-unhealthy/deployment.yaml
 kubectl apply -f deployment-unhealthy/service.yaml
 ```
 
+NGINX Kurulumu
+```bash
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: casestudyapi-ingress
+  namespace: casestudy
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: casestudyapi-service-healthy
+            port:
+              number: 8000
+
+kubectl apply -f deployment-healthy/ingress.yaml
+```
+curl localhost a istek attığmda ekran görüntüsündeki çıktı gözüktü. nginx İngress ile artık portsuz localhost ile erişebiliyorum
+
+
 
 ## Ekran Görüntüleri
 ### Unhealthy Pod
@@ -144,6 +175,9 @@ kubectl apply -f deployment-unhealthy/service.yaml
 ### Describe Pod
 ![Unhealty pod Describe Çıktısı](https://github.com/omeryenipazar/casestudy_bcfm/blob/master/images/deployment-describe.jpg?raw=true)
 
-  
+
+### Curl With Ingress
+![Curl Çıktısı](https://github.com/omeryenipazar/casestudy_bcfm/blob/master/images/curlingress.jpg?raw=true)
+
 
 
