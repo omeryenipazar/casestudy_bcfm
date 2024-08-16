@@ -113,32 +113,34 @@ Bu adımları takip ederek, uygulamam Kubernetes cluster'ında çalışır hale 
 
 health endpointinden 503 veren application için feature/unhealth branch'ini oluşturdum ve onun buildini aldım
 unhealthy image build:
-
+```bash
  docker build -t omeryenipazar/casestudyapi:0.5 .
 
  push 
   docker push omeryenipazar/casestudyapi:0.5
+```
 
-
-uygulamaların swagger ui ı http://localhost/docs
+uygulamaların swagger ui ı: 
+```bash
+http://localhost/docs
+```
 
 uygualamarın kubernetes'e deployment'ı
-
+```bash
 kubectl apply -f deployment-healthy/deployment.yaml
 kubectl apply -f deployment-healthy/service.yaml
-
+```
 unhealthy deploymentlar:
+```bash
 kubectl apply -f deployment-unhealthy/deployment.yaml
 kubectl apply -f deployment-unhealthy/service.yaml
-
-healthy ve unhealthy uygualamaların kubectl get pods ile ekran görüntüsünü koyalım 
-
-kubetl desccribe pods ile restart olan uygulamanın desribe kısmındaki 503 kısmının ekran görüntüsünü koyalım
+```
 
 
 ## Ekran Görüntüleri
 
-![Uygulama Ekran Görüntüsü](https://github.com/IQAndreas/sample-images/blob/gh-pages/100-100-color/00.jpg?raw=true)
+![Unhealty pod ekran görüntüsü](https://github.com/omeryenipazar/casestudy_bcfm/blob/master/images/deployment-unhealthy.jpg?raw=true)
+
 
   
 
